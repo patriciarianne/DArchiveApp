@@ -1,6 +1,8 @@
 pragma solidity ^0.4.24;
+import './safemath.sol';
 
 contract BookLibrary {
+  using SafeMath for uint;
   struct Book {
     string title;
     string description;
@@ -10,13 +12,11 @@ contract BookLibrary {
     string imageHash;
   }
 
-  // mapping (uint => Book) private books;
-  // uint[] private availableIndices;
-  mapping (string => Book[]) private availableBooks;
-  mapping (string => uint[]) private availableIndices;
+  Book[] private books;
+  uint lastAvailableIndex;
 
-  modifier isBookAvailable(uint _index, string _genre) {
-    require(availableBooks[_genre].length > 0);
+  modifier isBookAvailable(uint _index) {
+    require(getBookCount() > 0 && _index < lastAvailableIndex);
     _;
   }
   
@@ -26,32 +26,39 @@ contract BookLibrary {
   }
 
   function addBook(string _title, string _description, string _genre, string _linkHash, string _imageHash) public {
-    Book memory newBook;
-    newBook.title = _title;
-    newBook.description = _description;
-    newBook.author = msg.sender;
-    newBook.genre = _genre;
-    newBook.linkHash = _linkHash;
-    newBook.imageHash = _imageHash;
+    Book memory newBook = Book(
+      _title,
+      _description,
+      msg.sender,
+      _genre,
+      _linkHash,
+      _imageHash
+    );
 
-    availableBooks[_genre][availableIndices[_genre].length] = newBook;
-    availableIndices[_genre].push(availableIndices[_genre].length);
+    books.push(newBook);
+    lastAvailableIndex = lastAvailableIndex.add(1);
   }
 
-  function getBookCount(string _genre) public view returns (uint) {
-    return availableIndices[_genre].length;
+  function getBookCount() public view returns (uint) {
+    return books.length;
   }
   
-  function getBookAt(uint _index, string _genre) public view isBookAvailable(_index, _genre) returns (string title, string description, address author, string genre, string linkHash, string imageHash) {
-    
+  function getBookAt(uint _index) public view isBookAvailable(_index) returns (string title, string description, address author, string genre, string linkHash, string imageHash) {
+    Book memory retrievedBook = books[_index];
     return (
-      availableBooks[_genre][_index].title,
-      availableBooks[_genre][_index].description,
-      availableBooks[_genre][_index].author,
-      availableBooks[_genre][_index].genre,
-      availableBooks[_genre][_index].linkHash,
-      availableBooks[_genre][_index].imageHash
+      retrievedBook.title,
+      retrievedBook.description,
+      retrievedBook.author,
+      retrievedBook.genre,
+      retrievedBook.linkHash,
+      retrievedBook.imageHash
       );
   }
 
+  function removeBook(uint _index, address _author) public isBookAuthor(_author) {
+    uint lastIndex = lastAvailableIndex - 1;
+    books[_index] = books[lastIndex];
+    lastAvailableIndex = lastAvailableIndex.sub(1);
+    
+  }
 }
