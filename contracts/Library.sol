@@ -62,7 +62,7 @@ contract Library {
       _description,
       msg.sender,
       _genre,
-      _price * 10**18, 
+      _price, 
       _linkHash,
       _imageHash
     );
@@ -102,9 +102,10 @@ contract Library {
   function removeBook(uint _index) public isBookAuthor(_index) {
     uint lastIndex = lastAvailableIndex - 1;
     Book memory book = books[_index];
-    
+
     books[_index] = books[lastIndex];
     lastAvailableIndex = lastAvailableIndex.sub(1);
+    books.length = books.length.sub(1);
 
     emit BookRemoved(
       book.title,
