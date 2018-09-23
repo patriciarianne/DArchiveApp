@@ -18,13 +18,35 @@ contract Library {
   uint lastAvailableIndex;
   uint private contractBalance;
 
+  event BookAdded(
+    string title,
+    string description,
+    address author,
+    string genre,
+    uint price,
+    string linkHash,
+    string imageHash,
+    uint index
+  );
+
+   event BookRemoved(
+    string title,
+    string description,
+    address author,
+    string genre,
+    uint price,
+    string linkHash,
+    string imageHash,
+    uint index
+  );
+
   modifier isBookAvailable(uint _index) {
-    require(getBookCount() > 0 && _index < lastAvailableIndex);
+    require(getBookCount() > 0 && _index < lastAvailableIndex, 'Book is not available');
     _;
   }
   
   modifier isBookAuthor(uint _index) {
-    require(books[_index].author == msg.sender);
+    require(books[_index].author == msg.sender, 'Not the author of the book');
     _;
   }
 
@@ -47,6 +69,17 @@ contract Library {
 
     books.push(newBook);
     lastAvailableIndex = lastAvailableIndex.add(1);
+
+    emit BookAdded(
+      newBook.title,
+      newBook.description,
+      newBook.author,
+      newBook.genre,
+      newBook.price, 
+      newBook.linkHash,
+      newBook.imageHash,
+      lastAvailableIndex
+    );
   }
 
   function getBookCount() public view returns (uint) {
@@ -68,8 +101,21 @@ contract Library {
 
   function removeBook(uint _index) public isBookAuthor(_index) {
     uint lastIndex = lastAvailableIndex - 1;
+    Book memory book = books[_index];
+    
     books[_index] = books[lastIndex];
     lastAvailableIndex = lastAvailableIndex.sub(1);
+
+    emit BookRemoved(
+      book.title,
+      book.description,
+      book.author,
+      book.genre,
+      book.price, 
+      book.linkHash,
+      book.imageHash,
+      lastAvailableIndex
+    );
   }
 
   function buyBook(uint _index) public canBuy(_index) payable {
