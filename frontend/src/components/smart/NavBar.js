@@ -29,16 +29,13 @@ class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar style={{ backgroundColor: 'gray'}} light expand="md">
+        <Navbar style={{ backgroundColor: '#B69374'}} light expand="md">
           <NavbarBrand href="/">Hello</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                <NavLink href="/library/">Library</NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
