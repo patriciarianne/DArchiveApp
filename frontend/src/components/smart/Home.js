@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
+import { Container, Jumbotron, Button } from 'reactstrap'
+import UserForm from '../dumb/UserForm'
 
 class Home extends Component {
   render() {
     return (
-      <div>
-        <p>home</p>
-      </div>
+      <Container>
+        <Jumbotron>
+          <UserForm />
+          <Button>Login</Button>
+        </Jumbotron>
+      </Container>
     )
   }
 }
