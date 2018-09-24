@@ -38,7 +38,7 @@ contract Library {
     string linkHash,
     string imageHash,
     uint index
-  );
+  ); 
 
   modifier isBookAvailable(uint _index) {
     require(getBookCount() > 0 && _index < lastAvailableIndex, 'Book is not available');
@@ -68,8 +68,6 @@ contract Library {
     );
 
     books.push(newBook);
-    lastAvailableIndex = lastAvailableIndex.add(1);
-
     emit BookAdded(
       newBook.title,
       newBook.description,
@@ -80,10 +78,11 @@ contract Library {
       newBook.imageHash,
       lastAvailableIndex
     );
+    lastAvailableIndex = lastAvailableIndex.add(1);
   }
 
   function getBookCount() public view returns (uint) {
-    return books.length;
+    return lastAvailableIndex;
   }
   
   function getBookAt(uint _index) public view isBookAvailable(_index) returns (string title, string description, address author, string genre, uint price, string linkHash, string imageHash) {
@@ -105,7 +104,6 @@ contract Library {
 
     books[_index] = books[lastIndex];
     lastAvailableIndex = lastAvailableIndex.sub(1);
-    books.length = books.length.sub(1);
 
     emit BookRemoved(
       book.title,
