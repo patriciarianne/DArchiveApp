@@ -15,7 +15,8 @@ contract Library {
   }
 
   Book[] private books;
-  uint lastAvailableIndex;
+  uint private lastAvailableIndex;
+  mapping (address => uint) private balances;
   uint private contractBalance;
 
   event BookAdded(
@@ -120,7 +121,17 @@ contract Library {
   function buyBook(uint _index) public canBuy(_index) payable {
     address author = books[_index].author;
     contractBalance = contractBalance.add((msg.value * 5)/100);
-    author.transfer((msg.value * 95)/100);
+    balances[author] = balances[author].add((msg.value * 95)/100);
+  }
+
+  function getBalance() public view returns (uint) {
+    return balances[msg.sender];
+  }
+  
+  function withdrawBalance() public {
+    uint balance = balances[msg.sender];
+    balances[msg.sender] = 0;
+    msg.sender.transfer(balance);
   }
 
   function getContractBalance () public view returns (uint) {
