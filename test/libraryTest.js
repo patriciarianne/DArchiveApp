@@ -4,7 +4,6 @@ contract("Library", async (accounts) => {
   let library
 
   beforeEach('Deploy contract', async () => {
-    // library = await Library.new({ from: accounts[0], gas: 6000000})
     library = await Library.deployed()
   })
 
@@ -32,6 +31,7 @@ contract("Library", async (accounts) => {
         { from: accounts[0] }
       )
       const booksCount = await library.getBookCount()
+      console.log(booksCount, "COUNTTTTTTTTTTTTTTTTTTTTTTTT")
       assert.equal(booksCount, 1);
     })
 
@@ -55,6 +55,7 @@ contract("Library", async (accounts) => {
         { from: accounts[1] }
       )
       const booksCount2 = await library.getBookCount()
+      console.log(booksCount2, "COUNTTTTTTTTTTTTTTTTTTTTTTTT")
       assert.equal(booksCount2, 3);
     })
 
@@ -69,6 +70,16 @@ contract("Library", async (accounts) => {
       assert.equal(imageHash, 'testImageHash')
     })
 
+    it('should not return a book that does not exist', async () => {
+      let error = null
+      try {
+        await library.getBookAt(5)
+      } catch (err) {
+        error = err
+      }
+      assert.notEqual(error, null)
+    })
+
     it('should remove the book by index', async () => {
       await library.removeBook(1, { from: accounts[1] })
       const booksCount = await library.getBookCount()
@@ -81,17 +92,74 @@ contract("Library", async (accounts) => {
     })
   
     it('should not remove the book when user is not the author', async () => {
+      let error = null
       try {
         await library.removeBook(0, { from: accounts[1] })
-      } catch (error) {
-        assert.equal(error, 'Not the author of the book')
+      } catch (err) {
+        error = err
       }
-    })
+      assert.notEqual(error, null)
+    })  
 
     it('should buy the book by index', async () => {
       await library.buyBook(1, { from: accounts[0], value: 10 * ETHER })
       const contractBalance = await library.getContractBalance()
       assert.equal(contractBalance, (10 * ETHER * 5)/100)
+    })
+
+    it('should not buy the book if the value is not equal to the book price', async () => {
+      let error = null
+      try {
+        await library.buyBook(1, { from: accounts[0], value: 1 * ETHER })
+      } catch (err) {
+        error = err
+      }
+      const contractBalance = await library.getContractBalance()
+      
+      assert.notEqual(error, null)
+      assert.equal(contractBalance, (10 * ETHER * 5)/100)
+    })
+    
+    it('should not buy the book if the user is the author of the book', async () => {
+      let error = null
+      try {
+        await library.buyBook(1, { from: accounts[1], value: 10 * ETHER })
+      } catch (err) {
+        error = err
+      }
+      const contractBalance = await library.getContractBalance()
+      
+      assert.notEqual(error, null)
+      assert.equal(contractBalance, (10 * ETHER * 5)/100)
+    })
+
+    it('should not buy the book if the user is the author of the book and the value is not equal to the book price', async () => {
+      let error = null
+      try {
+        await library.buyBook(1, { from: accounts[1], value: 5 * ETHER })
+      } catch (err) {
+        error = err
+      }
+      const contractBalance = await library.getContractBalance()
+      
+      assert.notEqual(error, null)
+      assert.equal(contractBalance, (10 * ETHER * 5)/100)
+    })
+
+    it('should get balance of the user', async () => {
+      const testBalance = (10 * ETHER * 95)/100
+      const balance = await library.getBalance({ from: accounts[1]})
+      assert.equal(balance, testBalance)
+    })
+
+    it('should withdraw balance of the user', async () => {
+      const testBalance = (10 * ETHER * 95)/100
+      await library.withdrawBalance({ from: accounts[1] })
+      const userBalance = await web3.eth.getBalance(accounts[1])
+      console.log(userBalance, 'DFDFDFD')
+      const balance = await library.getBalance({ from: accounts[1] })
+      assert.equal(balance, 0)
+      // assert.equal(userBalance, testBalance)
     })
   })
 })
