@@ -1,4 +1,4 @@
-import { provider, ethers } from '../../helpers/ethersConfig'
+import { provider, ethers } from '../helpers/ethersConfig'
 
 class Wallet {
   constructor(privateKey) {
@@ -7,12 +7,6 @@ class Wallet {
     } else {
       this.walletData = new ethers.Wallet.createRandom()
     }
-  }
-
-  async getBalance(address) {
-    const initialBal = await provider.getBalance(address)
-    let etherBalance = ethers.utils.formatEther(initialBal);
-    return etherBalance
   }
 }
 
