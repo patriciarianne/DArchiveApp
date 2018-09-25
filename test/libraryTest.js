@@ -31,7 +31,6 @@ contract("Library", async (accounts) => {
         { from: accounts[0] }
       )
       const booksCount = await library.getBookCount()
-      console.log(booksCount, "COUNTTTTTTTTTTTTTTTTTTTTTTTT")
       assert.equal(booksCount, 1);
     })
 
@@ -55,7 +54,6 @@ contract("Library", async (accounts) => {
         { from: accounts[1] }
       )
       const booksCount2 = await library.getBookCount()
-      console.log(booksCount2, "COUNTTTTTTTTTTTTTTTTTTTTTTTT")
       assert.equal(booksCount2, 3);
     })
 
@@ -153,13 +151,9 @@ contract("Library", async (accounts) => {
     })
 
     it('should withdraw balance of the user', async () => {
-      const testBalance = (10 * ETHER * 95)/100
       await library.withdrawBalance({ from: accounts[1] })
-      const userBalance = await web3.eth.getBalance(accounts[1])
-      console.log(userBalance, 'DFDFDFD')
       const balance = await library.getBalance({ from: accounts[1] })
       assert.equal(balance, 0)
-      // assert.equal(userBalance, testBalance)
     })
   })
 })
