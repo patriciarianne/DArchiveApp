@@ -39,18 +39,14 @@ class NavBar extends React.Component {
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  Options
+                  Wallet
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                    Option 1
+                    <NavLink href="/createWallet/">Create Wallet</NavLink>
                   </DropdownItem>
                   <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
+                    <NavLink href="/openWallet/">Open Wallet</NavLink>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

@@ -17,7 +17,6 @@ class EtheriumClient {
   async generateWallet() {
     this.wallet = new Wallet().walletData
   }
-
   
   static async getBalance(address) {
     const initialBal = await provider.getBalance(address)
