@@ -37,18 +37,27 @@ class Registration extends Component {
     return (
       <Container>
         <Col sm={8} xs={12} md={{ size: 8, offset: 2 }}>
-          <Jumbotron>
+          <Jumbotron style={{marginTop: 20}}>
             <UserForm 
               handleInputChange={this.handleInputChange}
               isRegistration={true}
               values={this.state}
             />
-            <Button onClick={this.handleRegister}>Register</Button>
+            <Button style={buttonStyle} onClick={this.handleRegister}>Register</Button>
           </Jumbotron>
         </Col>
       </Container>
     )
   }
 }
+
+const buttonStyle = {
+  marginRight: '20%',
+  marginLeft: '20%',
+  width: '60%',
+  backgroundColor: '#851E00',
+  color: '#ffff'
+}
+
 
 export default Registration

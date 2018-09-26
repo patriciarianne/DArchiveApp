@@ -41,18 +41,29 @@ class Home extends Component {
     return (
       <Container>
         <Col sm={8} xs={12} md={{ size: 8, offset: 2 }}>
-          <Jumbotron>
+          <Jumbotron style={{marginTop: 20}}>
             <UserForm 
               handleInputChange={this.handleInputChange}
               values={this.state}
             />
-            <Button onClick={this.handleLogin}>Login</Button>
-            <Label><Link to='/register'>Create account</Link></Label>
+            <Button style={buttonStyle} onClick={this.handleLogin}>Login</Button>
+            <div style={{textAlign:'center', marginTop: 20, color: '#851E00'}}>
+              <Label>Don't have an account? </Label>
+              <Link style={{color: '#851E00'}} to='/register'> Register now </Link>
+            </div>
           </Jumbotron>
         </Col>
       </Container>
     )
   }
+}
+
+const buttonStyle = {
+  marginRight: '20%',
+  marginLeft: '20%',
+  width: '60%',
+  backgroundColor: '#851E00',
+  color: '#ffff'
 }
 
 export default withRouter(Home)
