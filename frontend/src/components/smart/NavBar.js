@@ -13,6 +13,7 @@ import {
   DropdownItem } from 'reactstrap';
   import {Link} from 'react-router-dom'
 
+
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -30,24 +31,27 @@ class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar style={{ backgroundColor: '#B69374'}} light expand="md">
-          <NavbarBrand><Link to="/" style={{ textDecoration: 'none'}}>Hello</Link></NavbarBrand>
+        <Navbar style={{ backgroundColor: '#851E00'}} light expand="md">
+          <NavbarBrand><Link to="/" style={linkStyle}>D'Archive</Link></NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink><Link to="/library/" style={{ textDecoration: 'none'}}>Library</Link></NavLink>
+                <NavLink><Link to="/library" style={linkStyle}>Library</Link></NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink><Link to="/addBook" style={linkStyle}>Add Book</Link></NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Wallet
-                </DropdownToggle>
+                  <DropdownToggle nav caret>
+                    Profile
+                  </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                    <NavLink><Link to="/createWallet/" style={{ textDecoration: 'none'}}>Create Wallet</Link></NavLink>
+                    <NavLink><Link to="/createWallet/" style={{textDecoration: 'none'}}>Create Wallet</Link></NavLink>
                   </DropdownItem>
                   <DropdownItem>
-                    <NavLink><Link to="/openWallet/" style={{ textDecoration: 'none'}}>Open Wallet</Link></NavLink>
+                    <NavLink><Link to="/openWallet/" style={{textDecoration: 'none'}}>Open Wallet</Link></NavLink>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -57,6 +61,12 @@ class NavBar extends React.Component {
       </div>
     );
   }
+}
+
+const linkStyle = {
+  textDecoration: 'none',
+  size: 20,
+  color: '#FFFFFF'
 }
 
 export default NavBar
