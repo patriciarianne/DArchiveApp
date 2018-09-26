@@ -54,8 +54,8 @@ class CreateWallet extends Component {
   render() {
     return (
       <Container>
-        <Col sm={8} xs={12} md={{ size: 8, offset: 2 }}>
-          <Jumbotron>
+        <Col sm={12} xs={12} md={{ size: 8, offset: 2 }}>
+          <Jumbotron style={{ marginTop: 50}}>
             <WalletForm
                 generateWallet={this.generateWallet}
                 saveJsonWallet={this.saveJsonWallet}
