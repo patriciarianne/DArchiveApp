@@ -1,39 +1,53 @@
 import React, { Component } from 'react'
-import { Container, Jumbotron, Button, Col } from 'reactstrap'
-
-
+import { Container, Jumbotron, Button, Col, Label } from 'reactstrap'
 import UserForm from '../dumb/UserForm'
+
+import { firebase, collection} from '../../firebase'
+import { Link, withRouter } from 'react-router-dom';
+
 class Home extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
 
-  // async decryptWallet() {
-  //   const jsonWallet = sessionStorage.getItem('jsonWallet')
-  //   const decryptedWallet = await EtheriumClient.decryptWallet(jsonWallet, 'pass')
-  //   const balance = await EtheriumClient.getBalance(decryptedWallet.address)
-  //   console.log(balance, 'BALANCE')
-  //   console.log(decryptedWallet, 'decrypted wallet')
-  // }
+    }
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleLogin = this.handleLogin.bind(this)
+    this.redirectToLibrary = this.redirectToLibrary.bind(this)
+  }
 
-  // uploadJSONWallet(event) {
-  //   const files = event.target.files
-  //   const reader = new FileReader()
+  handleInputChange(event) {
+    const { id, value } = event.target
+    this.setState({
+      [id]: value
+    })
+  }
 
-  //   if (files.length) {
-  //     reader.readAsText(files[0])
-  //   }
-  //   reader.onload = function () {
-  //     console.log(reader.result)
-  //     sessionStorage.setItem('jsonWallet', reader.result)
-  //   }
-  // }
+  async handleLogin() {
+    const { email, password } = this.state
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password)
+      this.redirectToLibrary()
+    } catch (error) {
+      throw new Error('User does not exist')
+    }
+  }
+
+  redirectToLibrary() {
+    this.props.history.push('/library')
+  }
+
   render() {
     return (
       <Container>
         <Col sm={8} xs={12} md={{ size: 8, offset: 2 }}>
           <Jumbotron>
-            <UserForm />
-            <Button onClick={this.decryptWallet}>decryptWallet</Button>
-            
-            <input type="file" onChange={this.test} />
+            <UserForm 
+              handleInputChange={this.handleInputChange}
+              values={this.state}
+            />
+            <Button onClick={this.handleLogin}>Login</Button>
+            <Label><Link to='/register'>Create account</Link></Label>
           </Jumbotron>
         </Col>
       </Container>
@@ -41,4 +55,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default withRouter(Home)

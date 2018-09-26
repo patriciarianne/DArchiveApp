@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import EtheriumClient from '../../models/EtheriumClient'
 class OpenWallet extends Component {
   constructor(props) {
     super(props)
@@ -28,7 +28,7 @@ class OpenWallet extends Component {
   render() {
     return (
       <div>
-        
+        open wallet
       </div>
     )
   }
