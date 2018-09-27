@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import BookList from '../dumb/BookList'
+import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap'
 import ethers from 'ethers'
 import { getBookCount, getBookAt, getIsBookAuthor } from '../../helpers/libraryContract'
@@ -11,7 +12,7 @@ class Library extends Component {
       books: []
     }
 
-    this.redirectToFile = this.redirectToFile.bind(this)
+    this.redirectToBook = this.redirectToBook.bind(this)
   }
 
   async componentDidMount() {
@@ -21,27 +22,23 @@ class Library extends Component {
       let book = await getBookAt(index)
       // const isBookAuthor = await getIsBookAuthor(index)
       const price = ethers.utils.formatEther(book.price)
-      const newBook = {...book, price}
+      const newBook = {...book, price, index}
       books.push(newBook)
     }
     this.setState({ books })
   }
 
-  redirectToFile(fileHash) {
-   console.log(`https://gateway.ipfs.io/ipfs/${fileHash}`)
+  redirectToBook(index) {
+   this.props.history.push(`book/${index}`)
   }
-
-  // async isBookAuthor(index) {
-  //   return await getIsBookAuthor(index)
-  // }
 
   render() {
     return (
       <div>
-        <BookList books={this.state.books} redirectToFile={this.redirectToFile}/>
+        <BookList books={this.state.books} redirectToBook={this.redirectToBook}/>
       </div>
     )
   }
 }
 
-export default Library
+export default withRouter(Library)
