@@ -54,14 +54,16 @@ const removeBook = async (index, wallet) => {
   }
 }
 
+const getIsBookAuthor = async (index, wallet) => {
+  const library = setLibraryContract(wallet)
+  const isAuthor = await library.getIsBookAuthor(index)
+  return isAuthor
+}
+
 const getWallet = async (password) => {
   const jsonWallet = sessionStorage.getItem('jsonWallet')
   const decryptedWallet = await EtheriumClient.decryptWallet(jsonWallet, password)
   return decryptedWallet
 }
 
-
-
-
-
-export { getLibraryContract, getBookCount, addBook, getBookAt, removeBook, getWallet }
+export { getLibraryContract, getBookCount, addBook, getBookAt, removeBook, getIsBookAuthor, getWallet }
