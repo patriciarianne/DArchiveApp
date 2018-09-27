@@ -22,6 +22,8 @@ class App extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
         this.setState({user})
+      } else {
+        this.setState({user:null})
       }
     })
     window.app = firebase
@@ -30,7 +32,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <NavBar />
+          <NavBar user={this.state.user}/>
           <Switch>
             <SignedOutRoute path='/' exact component={Home} user={this.state.user}/>
             <SignedOutRoute path='/register' component={Registration} user={this.state.user} />
