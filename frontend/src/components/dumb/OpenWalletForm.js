@@ -13,7 +13,7 @@ const  OpenWalletForm = (props) => {
         <Label style={{ fontSize: 20}}>Upload Wallet JSON File</Label>
       </Row>
       <Row>
-        <input type="file" name="uploadWallet" accept="application/json" />
+        <input type="file" name="uploadWallet" accept="application/json" onChange={uploadJSONWallet}/>
         </Row>
       <Row>
         <Label style={{ fontSize: 20, marginTop: 20}}>Password</Label>
