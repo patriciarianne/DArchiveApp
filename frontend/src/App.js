@@ -9,6 +9,7 @@ import CreateWallet from '../src/components/smart/CreateWallet'
 import OpenWallet from '../src/components/smart/OpenWallet'
 import Registration from '../src/components/smart/Registration'
 import AddBook from '../src/components/smart/AddBook'
+import Wallet from '../src/components/smart/Wallet'
 
 class App extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class App extends Component {
             <ProtectedRoute path='/createWallet' component={CreateWallet} user={this.state.user}/>
             <ProtectedRoute path='/openWallet' component={OpenWallet} user={this.state.user}/>
             <ProtectedRoute path='/addBook' component={AddBook} user={this.state.user}/>
+            <ProtectedRoute path='/wallet' component={Wallet} user={this.state.user}/>
           </Switch>
         </div>
       </Router>

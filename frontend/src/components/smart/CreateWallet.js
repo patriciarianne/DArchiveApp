@@ -39,12 +39,11 @@ class CreateWallet extends Component {
   saveJsonWallet() {
     const jsonWallet = sessionStorage.getItem('jsonWallet')
     const blob = new Blob([jsonWallet], { type:'application/json' })
-    console.log(blob)
     saveAs(blob, 'YourWallet.json')
   }
 
-  handleInputChange(evt) {
-    const value = evt.target.value
+  handleInputChange(event) {
+    const value = event.target.value
 
     this.setState({
       password: value

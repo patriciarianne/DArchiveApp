@@ -54,20 +54,20 @@ class NavBar extends React.Component {
     return (
       <div>
         <Navbar style={{ backgroundColor: '#851E00'}} light expand="md">
-          <NavbarBrand><Link to="/" style={linkStyle}>D'Archive</Link></NavbarBrand>
+          <NavbarBrand><Link style={style.title} to="/">D'Archive</Link></NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             {
               this.state.user ? (
                 <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink><Link to="/library" style={linkStyle}>Library</Link></NavLink>
+                  <NavLink><Link to="/library" style={style.link}>Library</Link></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><Link to="/addBook" style={linkStyle}>Add Book</Link></NavLink>
+                  <NavLink><Link to="/addBook" style={style.link}>Add Book</Link></NavLink>
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
-                    <DropdownToggle nav caret>
+                    <DropdownToggle nav caret style={{color: 'white'}}>
                       Profile
                     </DropdownToggle>
                   <DropdownMenu right>
@@ -75,15 +75,15 @@ class NavBar extends React.Component {
                       !this.state.wallet ? (
                         <div>
                         <DropdownItem>
-                          <NavLink><Link to="/createWallet/" style={{textDecoration: 'none', color: 'black'}}>Create Wallet</Link></NavLink>
+                          <NavLink><Link to="/createWallet/" style={style.dropdown}>Create Wallet</Link></NavLink>
                         </DropdownItem>
                         <DropdownItem>
-                          <NavLink><Link to="/openWallet/" style={{textDecoration: 'none', color: 'black'}}>Open Wallet</Link></NavLink>
+                          <NavLink><Link to="/openWallet/" style={style.dropdown}>Import Wallet</Link></NavLink>
                         </DropdownItem>
                         </div>
                       ) : (
                         <DropdownItem>
-                          <NavLink><Link to="/openWallet/" style={{textDecoration: 'none', color: 'black'}}>View Balance</Link></NavLink>
+                          <Link to="/wallet/" style={style.dropdown}>View Balance</Link>
                         </DropdownItem>
                       )
                     }
@@ -103,10 +103,22 @@ class NavBar extends React.Component {
   }
 }
 
-const linkStyle = {
-  textDecoration: 'none',
-  size: 20,
-  color: '#FFFFFF'
+const style = {
+  title: {
+    textDecoration: 'none',
+    size: 30,
+    color: '#FFFFFF',
+    fontStyle: 'bold'
+  },
+  link: {
+    textDecoration: 'none',
+    size: 20,
+    color: '#FFFFFF'
+  },
+  dropdown: {
+    textDecoration: 'none',
+    color: '#000'
+  }
 }
 
 export default NavBar
