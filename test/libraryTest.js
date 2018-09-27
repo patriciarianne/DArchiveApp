@@ -1,5 +1,6 @@
 const Library = artifacts.require("./Library.sol")
 const ETHER = 10 ** 18
+
 contract("Library", async (accounts) => {
   let library
 
@@ -25,7 +26,7 @@ contract("Library", async (accounts) => {
         'Test book',
         'Test description',
         'Test genre',
-        10 * ETHER,
+        10,
         'testLinkHash',
         'testImageHash',
         { from: accounts[0] }
@@ -39,7 +40,7 @@ contract("Library", async (accounts) => {
         'Test2 book',
         'Test2 description',
         'Test2 genre',
-        10 * ETHER,
+        10,
         'test2LinkHash',
         'test2ImageHash',
         { from: accounts[1] }
@@ -48,7 +49,7 @@ contract("Library", async (accounts) => {
         'Test3 book',
         'Test3 description',
         'Test3 genre',
-        10 * ETHER,
+        10,
         'test3LinkHash',
         'test3ImageHash',
         { from: accounts[1] }
@@ -63,7 +64,7 @@ contract("Library", async (accounts) => {
       assert.equal(description, 'Test description')
       assert.equal(author, accounts[0])
       assert.equal(genre, 'Test genre')
-      assert.equal(price, 10 * ETHER)
+      assert.equal(price, 10 * 10 **18)
       assert.equal(linkHash, 'testLinkHash')
       assert.equal(imageHash, 'testImageHash')
     })
@@ -100,9 +101,9 @@ contract("Library", async (accounts) => {
     })  
 
     it('should buy the book by index', async () => {
-      await library.buyBook(1, { from: accounts[0], value: 10 * ETHER })
+      await library.buyBook(1, { from: accounts[0], value: 10 * ETHER})
       const contractBalance = await library.getContractBalance()
-      assert.equal(contractBalance, (10 * ETHER * 5)/100)
+      assert.equal(contractBalance, (10 * ETHER  * 5)/100)
     })
 
     it('should not buy the book if the value is not equal to the book price', async () => {
@@ -115,13 +116,13 @@ contract("Library", async (accounts) => {
       const contractBalance = await library.getContractBalance()
       
       assert.notEqual(error, null)
-      assert.equal(contractBalance, (10 * ETHER * 5)/100)
+      assert.equal(contractBalance, (10 * ETHER  * 5)/100)
     })
     
     it('should not buy the book if the user is the author of the book', async () => {
       let error = null
       try {
-        await library.buyBook(1, { from: accounts[1], value: 10 * ETHER })
+        await library.buyBook(1, { from: accounts[1], value: 10 * ETHER})
       } catch (err) {
         error = err
       }
@@ -145,7 +146,7 @@ contract("Library", async (accounts) => {
     })
 
     it('should get balance of the user', async () => {
-      const testBalance = (10 * ETHER * 95)/100
+      const testBalance = (10 * ETHER  * 95)/100
       const balance = await library.getBalance({ from: accounts[1]})
       assert.equal(balance, testBalance)
     })
@@ -154,6 +155,11 @@ contract("Library", async (accounts) => {
       await library.withdrawBalance({ from: accounts[1] })
       const balance = await library.getBalance({ from: accounts[1] })
       assert.equal(balance, 0)
+    })
+
+    it('should return true if the user is the book author', async () => {
+      const isAuthor = await library.getIsBookAuthor(1, { from: accounts[1] })
+      assert.equal(isAuthor, true)
     })
   })
 })

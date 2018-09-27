@@ -63,7 +63,7 @@ contract Library {
       _description,
       msg.sender,
       _genre,
-      _price, 
+      _price * 10 ** 18, 
       _linkHash,
       _imageHash
     );
@@ -134,7 +134,11 @@ contract Library {
     msg.sender.transfer(balance);
   }
 
-  function getContractBalance () public view returns (uint) {
+  function getContractBalance() public view returns (uint) {
     return contractBalance;
+  }
+
+  function getIsBookAuthor(uint _index) public view isBookAuthor(_index) returns (bool) {
+    return true;
   }
 }
