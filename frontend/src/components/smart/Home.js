@@ -41,7 +41,7 @@ class Home extends Component {
     return (
       <Container>
         <Col sm={8} xs={12} md={{ size: 8, offset: 2 }}>
-          <Jumbotron style={{marginTop: 20}}>
+          <Jumbotron style={{backgroundColor: '#FEF3D1', marginTop: 20}}>
             <UserForm 
               handleInputChange={this.handleInputChange}
               values={this.state}

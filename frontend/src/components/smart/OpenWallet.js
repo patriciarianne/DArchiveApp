@@ -32,13 +32,15 @@ class OpenWallet extends Component {
     reader.onload = function () {
       sessionStorage.setItem('jsonWallet', reader.result)
     }
+    
   }
 
   async decryptWallet() {
     const jsonWallet = sessionStorage.getItem('jsonWallet')
     const decryptedWallet = await EtheriumClient.decryptWallet(jsonWallet, this.state.password)
-    const balance = await EtheriumClient.getBalance(decryptedWallet.address)
-    console.log(balance, 'BALANCE')
+
+    // const balance = await EtheriumClient.getBalance(decryptedWallet.address)
+    // console.log(balance, 'BALANCE')
     console.log(decryptedWallet, 'decrypted wallet')
   }
 
@@ -51,7 +53,6 @@ class OpenWallet extends Component {
               handleInputChange={this.handleInputChange}
               decryptWallet={this.decryptWallet}
               uploadJSONWallet={this.uploadJSONWallet}
-              
             />
           </Jumbotron>
         </Col>    
