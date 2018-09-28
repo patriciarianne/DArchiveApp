@@ -21,14 +21,18 @@ const getBookCount = async () => {
 
 const addBook = async (book, wallet) => {
   const library = setLibraryContract(wallet)
-  await library.addBook(
+  const bookPrice = ethers.utils.parseEther(book.price)
+  const result = await library.addBook(
     book.title,
     book.description,
     book.genre,
-    book.price,
+    bookPrice,
     book.linkHash,
     book.imageHash
   )
+  const tx = await provider.waitForTransaction(result.hash)
+  return tx
+
 }
 
 const getBookAt = async (index) => {
@@ -47,11 +51,9 @@ const getBookAt = async (index) => {
 
 const removeBook = async (index, wallet) => {
   const library = setLibraryContract(wallet)
-  try {
-    await library.removeBook(index)
-  } catch (error) {
-    throw new Error(error)
-  }
+  const result = await library.removeBook(index)
+  const tx = await provider.waitForTransaction(result.hash)
+  return tx 
 }
 
 const getIsBookAuthor = async (index, wallet) => {
@@ -64,11 +66,9 @@ const buyBook = async (index, value, wallet) => {
   const ethValue = ethers.utils.parseEther(value)
   const library = setLibraryContract(wallet)
 
-  try {
-    await library.buyBook(index, {value: ethValue})
-  } catch (error) {
-   throw new Error(error)
-  }
+  const result = await library.buyBook(index, {value: ethValue})
+  const tx = await provider.waitForTransaction(result.hash)
+  return tx 
 }
 
 const getBalance = async (wallet) => {
@@ -78,11 +78,9 @@ const getBalance = async (wallet) => {
 
 const withdrawBalance = async (wallet) => {
   const library = setLibraryContract(wallet)
-  try {
-    await library.withdrawBalance()
-  } catch (error) {
-    throw new Error(error)
-  }
+  const result = await library.withdrawBalance()
+  const tx = await provider.waitForTransaction(result.hash)
+  return tx
 }
 
 const getWallet = async (password) => {

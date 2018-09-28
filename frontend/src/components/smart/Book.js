@@ -57,6 +57,7 @@ class Book extends Component {
       try {
         const result = await buyBook(index, val, wallet)
         console.log(result, 'Buy book')
+        console.log(book.linkHash)
         this.redirectToFile(book.linkHash)
         this.setState({openModal: !this.state.openModal})
       } catch (error) {

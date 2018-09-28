@@ -39,17 +39,20 @@ class Wallet extends Component {
     let confirmedBalance = 0
     const wallet = await getWallet(password)
     const pendingBalanceVal = await getBalance(wallet)
+    
     pendingBalance = ethers.utils.formatEther(pendingBalanceVal)
     confirmedBalance = await EtheriumClient.getBalance(wallet.address)
-    console.log(wallet.address, 'ADDRESS')
+
     this.setState({ pendingBalance, confirmedBalance, openModal: !this.state.openModal, wallet, address: wallet.address })
   }
 
   async withdrawBalance() {
     try {
-      await withdrawBalance(this.state.wallet)
+      const result = await withdrawBalance(this.state.wallet)
+      console.log(result, 'Withdraw')
+      window.location.reload(true) 
     } catch (error) {
-      
+      throw new Error(error)
     }
   }
 

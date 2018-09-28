@@ -75,11 +75,11 @@ class AddBook extends Component {
     }
     const wallet = await getWallet(password)
     try {
-      await addBook(book, wallet)
-      console.log(book, 'BOOK')
+      const addbook = await addBook(book, wallet)
+      console.log(addbook, 'Book added!')
       this.redirectToLibrary()
     } catch (error) {
-      throw new Error
+      throw new Error(error)
     }
   } 
 

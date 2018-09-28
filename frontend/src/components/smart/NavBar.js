@@ -31,8 +31,9 @@ class NavBar extends React.Component {
       if(user) {
         const userData = await getUserData(user.uid)
         const wallet = userData.jsonWallet
+        const name = userData.name
         sessionStorage.setItem('jsonWallet', wallet)
-        this.setState({user, wallet})
+        this.setState({user, wallet, name})
       } else {
         this.setState({user:null})
       }
@@ -68,7 +69,7 @@ class NavBar extends React.Component {
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret style={{color: 'white'}}>
-                      Profile
+                      {this.state.name}
                     </DropdownToggle>
                   <DropdownMenu right>
                     <DropdownItem>

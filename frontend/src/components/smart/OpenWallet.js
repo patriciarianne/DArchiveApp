@@ -38,9 +38,6 @@ class OpenWallet extends Component {
   async decryptWallet() {
     const jsonWallet = sessionStorage.getItem('jsonWallet')
     const decryptedWallet = await EtheriumClient.decryptWallet(jsonWallet, this.state.password)
-
-    // const balance = await EtheriumClient.getBalance(decryptedWallet.address)
-    // console.log(balance, 'BALANCE')
     console.log(decryptedWallet, 'decrypted wallet')
   }
 
