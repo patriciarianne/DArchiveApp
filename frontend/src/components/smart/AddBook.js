@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Col, Jumbotron, Button, Modal, Input, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Link, withRouter } from 'react-router-dom';
 import BookForm from '../dumb/BookForm'
 import { ipfs } from '../../helpers/contractConfig';
 import { addBook, getWallet } from '../../helpers/libraryContract'
@@ -16,6 +17,7 @@ class AddBook extends Component {
     this.uploadImage = this.uploadImage.bind(this)
     this.uploadFile = this.uploadFile.bind(this)
     this.addBook = this.addBook.bind(this)
+    this.redirectToLibrary = this.redirectToLibrary.bind(this)
   }
 
   toggle() {
@@ -72,9 +74,18 @@ class AddBook extends Component {
       imageHash: image[0].hash
     }
     const wallet = await getWallet(password)
-    await addBook(book, wallet)
-    console.log(book, 'BOOK')
+    try {
+      await addBook(book, wallet)
+      console.log(book, 'BOOK')
+      this.redirectToLibrary()
+    } catch (error) {
+      throw new Error
+    }
   } 
+
+  redirectToLibrary() {
+    this.props.history.push('library')
+   }
 
   render() {
     return (
@@ -113,4 +124,4 @@ const buttonStyle = {
   color: '#ffff'
 }
 
-export default AddBook
+export default withRouter(AddBook)
