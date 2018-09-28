@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap'
 import WalletView from '../dumb/WalletView'
-import { getWallet, getBalance } from '../../helpers/libraryContract'
+import { getWallet, getBalance, withdrawBalance } from '../../helpers/libraryContract'
 import EtheriumClient from '../../models/EtheriumClient'
 import ethers from 'ethers'
 
@@ -17,6 +17,7 @@ class Wallet extends Component {
     this.toggle = this.toggle.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
     this.getBalances = this.getBalances.bind(this)
+    this.withdrawBalance = this.withdrawBalance.bind(this)
   }
 
   toggle() {
@@ -34,27 +35,38 @@ class Wallet extends Component {
 
   async getBalances() {
     const { password } = this.state
+    let pendingBalance = 0
+    let confirmedBalance = 0
     const wallet = await getWallet(password)
     const pendingBalanceVal = await getBalance(wallet)
-    const pendingBalance = ethers.utils.formatEther(pendingBalanceVal)
-    const confirmedBalance = await EtheriumClient.getBalance(wallet.address)
-    console.log('PENDING', pendingBalance)
-    console.log('CONFIRMED', confirmedBalance)
-    this.setState({ pendingBalance, confirmedBalance })
+    pendingBalance = ethers.utils.formatEther(pendingBalanceVal)
+    confirmedBalance = await EtheriumClient.getBalance(wallet.address)
+    console.log(wallet.address, 'ADDRESS')
+    this.setState({ pendingBalance, confirmedBalance, openModal: !this.state.openModal, wallet, address: wallet.address })
+  }
+
+  async withdrawBalance() {
+    try {
+      await withdrawBalance(this.state.wallet)
+    } catch (error) {
+      
+    }
   }
 
   render() {
-    const { openModal, pendingBalance, confirmedBalance, password } = this.state 
+    const { openModal, pendingBalance, confirmedBalance, password, address } = this.state 
     return (
       <Container>
         <WalletView 
           pendingBalance={pendingBalance}
           confirmedBalance={confirmedBalance}
+          withdrawBalance={this.withdrawBalance}
+          address={address}
         />
         <Modal isOpen={openModal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Wallet Password</ModalHeader>
           <ModalBody>
-            <Input type="password" name="password" id="password" value={this.state.password} onChange={(text) => this.handleInputChange(text)}/>
+            <Input type="password" name="password" id="password" value={password} onChange={(text) => this.handleInputChange(text)}/>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.getBalances}>Continue</Button>{' '}

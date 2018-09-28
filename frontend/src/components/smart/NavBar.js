@@ -13,6 +13,7 @@ import {
   DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import { firebase } from '../../firebase'
+import { getUserData } from '../../helpers/dataFunctions'
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -26,22 +27,21 @@ class NavBar extends React.Component {
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if(user) {
-        this.setState({user})
+        const userData = await getUserData(user.uid)
+        const wallet = userData.jsonWallet
+        sessionStorage.setItem('jsonWallet', wallet)
+        this.setState({user, wallet})
       } else {
         this.setState({user:null})
       }
     })
-
-    const wallet = sessionStorage.getItem('jsonWallet')
-    this.setState({wallet})
   }
 
   logout() {
-    if (this.state.user) {
-      firebase.auth().signOut()
-    }
+    firebase.auth().signOut()
+    sessionStorage.clear()
   }
 
   toggle() {
@@ -54,7 +54,7 @@ class NavBar extends React.Component {
     return (
       <div>
         <Navbar style={{ backgroundColor: '#851E00'}} light expand="md">
-          <NavbarBrand><Link style={style.title} to="/">D'Archive</Link></NavbarBrand>
+          <Link style={style.title} to="/">D'Archive</Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             {
@@ -71,24 +71,11 @@ class NavBar extends React.Component {
                       Profile
                     </DropdownToggle>
                   <DropdownMenu right>
-                    {
-                      !this.state.wallet ? (
-                        <div>
-                        <DropdownItem>
-                          <NavLink><Link to="/createWallet/" style={style.dropdown}>Create Wallet</Link></NavLink>
-                        </DropdownItem>
-                        <DropdownItem>
-                          <NavLink><Link to="/openWallet/" style={style.dropdown}>Import Wallet</Link></NavLink>
-                        </DropdownItem>
-                        </div>
-                      ) : (
-                        <DropdownItem>
-                          <Link to="/wallet/" style={style.dropdown}>View Balance</Link>
-                        </DropdownItem>
-                      )
-                    }
+                    <DropdownItem>
+                      <Link to="/wallet/" style={style.dropdown}>Open Wallet</Link>
+                    </DropdownItem>
                     <DropdownItem style={{color: '#851E00'}} divider />
-                    <DropdownItem onClick={this.logout} style={{ textAlign: 'center'}}>
+                    <DropdownItem onClick={this.logout}>
                       Logout
                     </DropdownItem>
                   </DropdownMenu>
@@ -106,14 +93,13 @@ class NavBar extends React.Component {
 const style = {
   title: {
     textDecoration: 'none',
-    size: 30,
+    fontSize: 30,
     color: '#FFFFFF',
     fontStyle: 'bold'
   },
   link: {
     textDecoration: 'none',
-    size: 20,
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   dropdown: {
     textDecoration: 'none',
