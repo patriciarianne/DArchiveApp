@@ -3,7 +3,6 @@ import { Jumbotron, Label, Row, Button } from 'reactstrap'
 
 const WalletView = (props) => {
   const { pendingBalance, confirmedBalance, withdrawBalance, address } = props
-  console.log(address)
   return (
     <Jumbotron style={style.background}>
       <Row style={{marginTop: 20}}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ethers from 'ethers'
+import { withRouter } from 'react-router-dom';
 import { Container, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap'
 import BookView from '../dumb/BookView'
 import { getBookAt, getWallet, buyBook, removeBook } from '../../helpers/libraryContract'
@@ -15,6 +16,7 @@ class Book extends Component {
     this.toggle = this.toggle.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
     this.functionBook = this.functionBook.bind(this)
+    this.redirectToFile = this.redirectToFile.bind(this)
   }
 
   async componentDidMount() {
@@ -45,14 +47,17 @@ class Book extends Component {
     const val = ethers.utils.formatEther(book.price)
     if (isAuthor) {
       try {
-        await removeBook(index, wallet)
+        const result = await removeBook(index, wallet)
+        console.log(result, 'Removed book')
         this.setState({openModal: !this.state.openModal})
       } catch (error) {
         throw new Error(error)
       }
     } else {
       try {
-        await buyBook(index, val, wallet)
+        const result = await buyBook(index, val, wallet)
+        console.log(result, 'Buy book')
+        this.redirectToFile(book.linkHash)
         this.setState({openModal: !this.state.openModal})
       } catch (error) {
         throw new Error(error)
@@ -60,16 +65,8 @@ class Book extends Component {
     }
   }
 
-  async removeBook() {
-    const { index } = this.props.match.params
-    const { password } = this.state
-    const wallet = await getWallet(password)
-    try {
-      await this.removeBook(index, wallet)
-      this.setState({openModal: !this.state.openModal})
-    } catch (error) {
-      throw new Error(error)
-    }
+  redirectToFile(fileHash) {
+    window.location.href = `https://gateway.ipfs.io/ipfs/${fileHash}`
   }
 
   render() {
@@ -92,4 +89,4 @@ class Book extends Component {
   }
 }
 
-export default Book
+export default withRouter(Book)
