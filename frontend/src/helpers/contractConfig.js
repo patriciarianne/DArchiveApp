@@ -2,23 +2,128 @@ import IPFS from 'ipfs-api'
 
 const abi = [
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getBalance",
-		"outputs": [
+		"anonymous": false,
+		"inputs": [
 			{
-				"name": "",
+				"indexed": false,
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "genre",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "linkHash",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "imageHash",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "index",
 				"type": "uint256"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"name": "BookRemoved",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "genre",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "linkHash",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "imageHash",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "BookAdded",
+		"type": "event"
 	},
 	{
 		"constant": false,
-		"inputs": [],
-		"name": "withdrawBalance",
+		"inputs": [
+			{
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"name": "_genre",
+				"type": "string"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"name": "_linkHash",
+				"type": "string"
+			},
+			{
+				"name": "_imageHash",
+				"type": "string"
+			}
+		],
+		"name": "addBook",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -39,9 +144,32 @@ const abi = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "removeBook",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "withdrawBalance",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [],
-		"name": "getContractBalance",
+		"name": "getBalance",
 		"outputs": [
 			{
 				"name": "",
@@ -97,6 +225,34 @@ const abi = [
 	},
 	{
 		"constant": true,
+		"inputs": [],
+		"name": "getBookCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getContractBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
 		"inputs": [
 			{
 				"name": "_index",
@@ -113,166 +269,10 @@ const abi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"name": "_genre",
-				"type": "string"
-			},
-			{
-				"name": "_price",
-				"type": "uint256"
-			},
-			{
-				"name": "_linkHash",
-				"type": "string"
-			},
-			{
-				"name": "_imageHash",
-				"type": "string"
-			}
-		],
-		"name": "addBook",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_index",
-				"type": "uint256"
-			}
-		],
-		"name": "removeBook",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getBookCount",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "author",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "genre",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "linkHash",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "imageHash",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "BookAdded",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "author",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "genre",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "linkHash",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "imageHash",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "BookRemoved",
-		"type": "event"
 	}
 ]
 
-const address = '0xfd21fb19ae105f8a4363aedd33dadc6e6c39a671'
+const address = '0xaa4b43b4d563debac144907350b2994f34194272'
 
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https'})
 
