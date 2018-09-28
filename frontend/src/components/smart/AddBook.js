@@ -100,7 +100,7 @@ class AddBook extends Component {
             <Button style={buttonStyle} onClick={this.toggle}>Add Book</Button>
           </Jumbotron>
         </Col>
-        <Modal isOpen={this.state.openModal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.openModal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Wallet Password</ModalHeader>
           <ModalBody>
             <Input type="password" name="password" id="password" value={this.state.password} onChange={(text) => this.handleInputChange(text)}/>

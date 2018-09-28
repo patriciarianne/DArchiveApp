@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import BookList from '../dumb/BookList'
 import { Link, withRouter } from 'react-router-dom';
-import { Button } from 'reactstrap'
 import ethers from 'ethers'
 import { getBookCount, getBookAt, getIsBookAuthor } from '../../helpers/libraryContract'
 
@@ -20,7 +19,6 @@ class Library extends Component {
     const bookCount = await getBookCount()
     for (let index = 0; index < bookCount; index++) {
       let book = await getBookAt(index)
-      // const isBookAuthor = await getIsBookAuthor(index)
       const price = ethers.utils.formatEther(book.price)
       const newBook = {...book, price, index}
       books.push(newBook)
