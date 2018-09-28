@@ -42,7 +42,7 @@ contract Library {
   ); 
 
   modifier isBookAvailable(uint _index) {
-    require(getBookCount() > 0 && _index < lastAvailableIndex, 'Book is not available');
+    require(getBookCount() > 0 && _index <= lastAvailableIndex, 'Book is not available');
     _;
   }
   
@@ -68,7 +68,6 @@ contract Library {
       _imageHash
     );
 
-    books.push(newBook);
     emit BookAdded(
       newBook.title,
       newBook.description,
@@ -79,7 +78,14 @@ contract Library {
       newBook.imageHash,
       lastAvailableIndex
     );
-    lastAvailableIndex = lastAvailableIndex.add(1);
+
+    if (books.length == lastAvailableIndex) {
+      books.push(newBook);
+    } else {
+      uint lastIndex = lastAvailableIndex;
+      books[lastIndex] = newBook;
+    }
+      lastAvailableIndex = lastAvailableIndex.add(1);
   }
 
   function getBookCount() public view returns (uint) {
