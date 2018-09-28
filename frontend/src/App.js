@@ -5,8 +5,6 @@ import { firebase, collection } from '../src/firebase'
 import NavBar from '../src/components/smart/NavBar'
 import Home from '../src/components/smart/Home'
 import Library from '../src/components/smart/Library'
-import CreateWallet from '../src/components/smart/CreateWallet'
-import OpenWallet from '../src/components/smart/OpenWallet'
 import Registration from '../src/components/smart/Registration'
 import AddBook from '../src/components/smart/AddBook'
 import Wallet from '../src/components/smart/Wallet'
@@ -39,8 +37,6 @@ class App extends Component {
             <SignedOutRoute path='/' exact component={Home} user={this.state.user}/>
             <SignedOutRoute path='/register' component={Registration} user={this.state.user} />
             <ProtectedRoute path='/library' component={Library} user={this.state.user} />
-            <ProtectedRoute path='/createWallet' component={CreateWallet} user={this.state.user}/>
-            <ProtectedRoute path='/openWallet' component={OpenWallet} user={this.state.user}/>
             <ProtectedRoute path='/addBook' component={AddBook} user={this.state.user}/>
             <ProtectedRoute path='/wallet' component={Wallet} user={this.state.user}/>
             <ProtectedRoute path='/book/:index' component={Book} user={this.state.user}/>
