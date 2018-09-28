@@ -60,10 +60,37 @@ const getIsBookAuthor = async (index, wallet) => {
   return isAuthor
 }
 
+const buyBook = async (index, value, wallet) => {
+  const ethValue = ethers.utils.parseEther(value)
+  console.log(ethValue, 'ethValue')
+  console.log(value, 'inputValue')
+  const library = setLibraryContract(wallet)
+  try {
+    await library.buyBook(index, {value: ethValue})
+  } catch (error) {
+   throw new Error(error)
+  }
+}
+
+const getBalance = async (wallet) => {
+  const library = setLibraryContract(wallet)
+  return await library.getBalance()
+}
+
 const getWallet = async (password) => {
   const jsonWallet = sessionStorage.getItem('jsonWallet')
   const decryptedWallet = await EtheriumClient.decryptWallet(jsonWallet, password)
   return decryptedWallet
 }
 
-export { getLibraryContract, getBookCount, addBook, getBookAt, removeBook, getIsBookAuthor, getWallet }
+export {
+  getLibraryContract,
+  getBookCount,
+  addBook,
+  getBookAt,
+  removeBook,
+  getIsBookAuthor,
+  buyBook,
+  getBalance,
+  getWallet
+}
