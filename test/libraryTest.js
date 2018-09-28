@@ -26,7 +26,7 @@ contract("Library", async (accounts) => {
         'Test book',
         'Test description',
         'Test genre',
-        10,
+        10 * ETHER,
         'testLinkHash',
         'testImageHash',
         { from: accounts[0] }
@@ -40,7 +40,7 @@ contract("Library", async (accounts) => {
         'Test2 book',
         'Test2 description',
         'Test2 genre',
-        10,
+        10 * ETHER,
         'test2LinkHash',
         'test2ImageHash',
         { from: accounts[1] }
@@ -49,7 +49,7 @@ contract("Library", async (accounts) => {
         'Test3 book',
         'Test3 description',
         'Test3 genre',
-        10,
+        10 * ETHER,
         'test3LinkHash',
         'test3ImageHash',
         { from: accounts[1] }
@@ -64,7 +64,7 @@ contract("Library", async (accounts) => {
       assert.equal(description, 'Test description')
       assert.equal(author, accounts[0])
       assert.equal(genre, 'Test genre')
-      assert.equal(price, 10 * 10 **18)
+      assert.equal(price, 10 * ETHER)
       assert.equal(linkHash, 'testLinkHash')
       assert.equal(imageHash, 'testImageHash')
     })

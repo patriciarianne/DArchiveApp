@@ -63,7 +63,7 @@ contract Library {
       _description,
       msg.sender,
       _genre,
-      _price * 10 ** 18, 
+      _price, 
       _linkHash,
       _imageHash
     );
