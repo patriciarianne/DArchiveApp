@@ -62,9 +62,8 @@ const getIsBookAuthor = async (index, wallet) => {
 
 const buyBook = async (index, value, wallet) => {
   const ethValue = ethers.utils.parseEther(value)
-  console.log(ethValue, 'ethValue')
-  console.log(value, 'inputValue')
   const library = setLibraryContract(wallet)
+
   try {
     await library.buyBook(index, {value: ethValue})
   } catch (error) {
@@ -75,6 +74,15 @@ const buyBook = async (index, value, wallet) => {
 const getBalance = async (wallet) => {
   const library = setLibraryContract(wallet)
   return await library.getBalance()
+}
+
+const withdrawBalance = async (wallet) => {
+  const library = setLibraryContract(wallet)
+  try {
+    await library.withdrawBalance()
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 const getWallet = async (password) => {
@@ -92,5 +100,6 @@ export {
   getIsBookAuthor,
   buyBook,
   getBalance,
+  withdrawBalance,
   getWallet
 }

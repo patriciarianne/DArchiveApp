@@ -2,7 +2,10 @@ import React from 'react';
 import { Media, Button, Row } from 'reactstrap'
 
 const BookView = (props) => {
-  const { book } = props
+  const { book, toggle, isBookAuthor } = props
+  const button = isBookAuthor ? (
+    <Button style={style.removeButton} onClick={toggle}>Remove Book</Button>
+  ) : <Button style={style.button} onClick={toggle}>Buy to download</Button>
   return (
     <Media>
       <Media left>
@@ -10,7 +13,7 @@ const BookView = (props) => {
           <img src={`https://gateway.ipfs.io/ipfs/${book.imageHash}`} alt={book.title} style={style.image}/>
         </Row>
         <Row>
-          <Button style={style.button}>Buy to download</Button>
+          {button}
         </Row>
       </Media>
       <Media body style={{padding: 20}}>
@@ -29,6 +32,13 @@ const style = {
     marginLeft: '20%',
     width: '60%',
     backgroundColor: '#851E00',
+    color: '#ffff'
+    },
+  removeButton: {
+    marginRight: '20%',
+    marginLeft: '20%',
+    width: '60%',
+    backgroundColor: '#C10505',
     color: '#ffff'
     },
   label: {
